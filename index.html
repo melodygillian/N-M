@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>N & M</title>
+  <link rel="stylesheet" href="css/main.css" />
+  <link rel="stylesheet" href="css/index.css" />
+</head>
+<body>
+
+  <main class="landing">
+
+    <!-- Ink splash decorations (SVG inline) -->
+    <div class="splash splash-tl" aria-hidden="true">
+      <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+        <ellipse cx="80" cy="80" rx="75" ry="60" fill="#028391" opacity="0.12" transform="rotate(-20 80 80)"/>
+        <ellipse cx="110" cy="60" rx="40" ry="28" fill="#028391" opacity="0.08" transform="rotate(15 110 60)"/>
+      </svg>
+    </div>
+    <div class="splash splash-br" aria-hidden="true">
+      <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+        <ellipse cx="100" cy="110" rx="80" ry="55" fill="#F85525" opacity="0.10" transform="rotate(25 100 110)"/>
+        <ellipse cx="70" cy="130" rx="35" ry="22" fill="#FAA968" opacity="0.12" transform="rotate(-10 70 130)"/>
+      </svg>
+    </div>
+
+    <!-- Title -->
+    <div class="title-block">
+      <h1 class="site-title" id="typewriter-title" aria-label="N & M"></h1>
+      <div class="title-cursor" id="cursor" aria-hidden="true">|</div>
+    </div>
+
+    <!-- Nav buttons -->
+    <nav class="landing-nav" role="navigation" aria-label="Sections">
+      <a href="notes.html" class="landing-btn btn-notes">
+        <span class="btn-icon" aria-hidden="true">✉</span>
+        <span class="btn-label">Leave a Note</span>
+        <span class="btn-sub">write to each other</span>
+      </a>
+      <a href="todo.html" class="landing-btn btn-todo">
+        <span class="btn-icon" aria-hidden="true">✓</span>
+        <span class="btn-label">To-Do List TGT</span>
+        <span class="btn-sub">things we'll do together</span>
+      </a>
+      <a href="drama.html" class="landing-btn btn-drama">
+        <span class="btn-icon" aria-hidden="true">▶</span>
+        <span class="btn-label">Drama Collection</span>
+        <span class="btn-sub">what we've watched</span>
+      </a>
+    </nav>
+
+  </main>
+
+  <script src="css/../js/app.js"></script>
+  <script src="css/../js/index.js"></script>
+</body>
+</html>

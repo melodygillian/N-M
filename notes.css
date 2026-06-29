@@ -1,0 +1,332 @@
+/* ============================================================
+   NOTES.CSS  —  editorial ink-splash, blush + steel palette
+   ============================================================ */
+
+/* ── Notes palette ── */
+:root {
+  --note-pink:  #f2c4ce;
+  --note-blush: #fde8ed;
+  --note-steel: #7ba7bc;
+  --note-deep:  #2c4a5a;
+  --note-ink:   #1a2f3a;
+}
+
+/* ── Page background ── */
+body {
+  background: #fdf6f8;
+}
+
+/* ── Brush decoration (editorial ink strokes) ── */
+.notes-deco {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.brush {
+  position: absolute;
+  border-radius: 60% 40% 70% 30% / 50% 60% 40% 50%;
+  opacity: 0.07;
+}
+
+.brush-1 {
+  width: 420px; height: 160px;
+  background: var(--note-steel);
+  top: 8%;  left: -80px;
+  transform: rotate(-8deg);
+}
+
+.brush-2 {
+  width: 300px; height: 100px;
+  background: var(--note-pink);
+  top: 22%; right: -60px;
+  transform: rotate(12deg);
+  opacity: 0.14;
+}
+
+.brush-3 {
+  width: 500px; height: 120px;
+  background: var(--note-steel);
+  bottom: 10%; left: 10%;
+  transform: rotate(-4deg);
+  opacity: 0.06;
+}
+
+/* ── Page content ── */
+.notes-content {
+  position: relative;
+  z-index: 1;
+}
+
+/* ── Heading ── */
+.notes-heading {
+  color: var(--note-deep);
+  font-size: 2rem;
+  margin-bottom: 20px;
+}
+
+/* ── Compose card ── */
+.compose-section {
+  margin-bottom: 48px;
+}
+
+.compose-card {
+  background: #fff;
+  border: 1.5px solid var(--note-pink);
+  border-radius: 14px;
+  padding: 20px;
+  box-shadow: 0 6px 28px rgba(44,74,90,0.07);
+  position: relative;
+}
+
+/* Subtle ink-drip top accent */
+.compose-card::before {
+  content: '';
+  position: absolute;
+  top: -1.5px; left: 32px;
+  width: 80px; height: 4px;
+  background: linear-gradient(90deg, var(--note-steel), var(--note-pink));
+  border-radius: 0 0 6px 6px;
+}
+
+textarea {
+  width: 100%;
+  border: none;
+  outline: none;
+  resize: none;
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  color: var(--note-ink);
+  line-height: 1.65;
+  background: transparent;
+}
+
+textarea::placeholder {
+  color: var(--note-steel);
+  opacity: 0.7;
+  font-style: italic;
+}
+
+.compose-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px solid #f0e4e8;
+}
+
+.char-count {
+  font-size: 0.72rem;
+  color: var(--note-steel);
+  letter-spacing: 0.04em;
+}
+
+/* ── Send button ── */
+.send-btn {
+  font-family: var(--font-typewriter);
+  font-size: 0.88rem;
+  letter-spacing: 0.08em;
+  color: #fff;
+  background: var(--note-deep);
+  padding: 8px 20px;
+  border-radius: 20px;
+  transition: background 0.2s, transform 0.15s;
+}
+.send-btn:hover {
+  background: var(--note-steel);
+  transform: translateY(-1px);
+}
+.send-btn:active { transform: translateY(0); }
+
+/* ── Notes feed ── */
+.notes-feed {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.empty-state {
+  font-family: var(--font-typewriter);
+  color: var(--note-steel);
+  font-size: 0.95rem;
+  letter-spacing: 0.05em;
+  opacity: 0.7;
+  text-align: center;
+  padding: 40px 0;
+}
+
+/* ── Note card ── */
+.note-card {
+  background: #fff;
+  border-radius: 12px;
+  border: 1px solid #f0e2e7;
+  box-shadow: 0 3px 16px rgba(44,74,90,0.06);
+  overflow: hidden;
+  animation: note-in 0.3s ease;
+}
+
+@keyframes note-in {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.note-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px 0;
+}
+
+.note-user-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.note-user-dot.Hannah   { background: var(--teal); }
+.note-user-dot.Melonely { background: var(--orange); }
+
+.note-author {
+  font-family: var(--font-typewriter);
+  font-size: 0.8rem;
+  letter-spacing: 0.06em;
+  color: var(--note-deep);
+}
+
+.note-body {
+  padding: 10px 16px 8px;
+  font-size: 0.95rem;
+  line-height: 1.65;
+  color: var(--note-ink);
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.note-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 16px 12px;
+}
+
+.reply-btn {
+  font-family: var(--font-typewriter);
+  font-size: 0.75rem;
+  color: var(--note-steel);
+  letter-spacing: 0.05em;
+  padding: 4px 0;
+  transition: color 0.2s;
+}
+.reply-btn:hover { color: var(--note-deep); }
+
+.delete-note-btn {
+  font-size: 0.72rem;
+  color: #ccc;
+  letter-spacing: 0.04em;
+  transition: color 0.2s;
+}
+.delete-note-btn:hover { color: #e07070; }
+
+/* ── Replies ── */
+.replies-list {
+  border-top: 1px solid #f3e6ea;
+  background: #fdf6f8;
+}
+
+.reply-item {
+  padding: 10px 16px 10px 28px;
+  border-bottom: 1px solid #f3e6ea;
+  position: relative;
+  animation: note-in 0.25s ease;
+}
+
+.reply-item::before {
+  content: '↳';
+  position: absolute;
+  left: 14px;
+  top: 12px;
+  font-size: 0.7rem;
+  color: var(--note-pink);
+}
+
+.reply-author {
+  font-family: var(--font-typewriter);
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  color: var(--note-deep);
+  margin-bottom: 4px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.reply-text {
+  font-size: 0.88rem;
+  color: var(--note-ink);
+  line-height: 1.55;
+  white-space: pre-wrap;
+}
+
+.reply-delete {
+  font-size: 0.65rem;
+  color: #ddd;
+  margin-left: auto;
+  transition: color 0.2s;
+}
+.reply-delete:hover { color: #e07070; }
+
+/* ── Reply modal ── */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 500;
+  background: rgba(26,47,58,0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.modal-box {
+  background: #fff;
+  border-radius: 16px;
+  padding: 28px;
+  width: 100%;
+  max-width: 440px;
+  position: relative;
+  box-shadow: 0 20px 60px rgba(26,47,58,0.25);
+}
+
+.modal-close {
+  position: absolute;
+  top: 16px; right: 16px;
+  font-size: 1rem;
+  color: #aaa;
+  transition: color 0.2s;
+}
+.modal-close:hover { color: var(--note-deep); }
+
+.modal-context {
+  font-size: 0.82rem;
+  color: var(--note-steel);
+  margin-bottom: 16px;
+  font-style: italic;
+  line-height: 1.5;
+  padding: 10px 14px;
+  background: #fdf6f8;
+  border-radius: 8px;
+  border-left: 3px solid var(--note-pink);
+}
+
+.modal-box textarea {
+  border: 1.5px solid #f0e2e7;
+  border-radius: 8px;
+  padding: 12px;
+  width: 100%;
+  margin-bottom: 16px;
+}
+
+.modal-send { display: block; margin-left: auto; }

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Drama Collection — N & M</title>
+  <link rel="stylesheet" href="css/main.css" />
+  <link rel="stylesheet" href="css/drama.css" />
+</head>
+<body>
+
+  <nav class="top-nav" style="background:#111">
+    <a href="index.html" class="nav-back" style="color:#e8e0d0">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M19 12H5M12 5l-7 7 7 7"/>
+      </svg>
+      home
+    </a>
+    <span class="nav-title" style="color:#e8e0d0; font-family: 'Playfair Display', serif; font-style:italic;">Drama Collection</span>
+    <div class="nav-right">
+      <span id="user-badge"></span>
+      <button class="switch-btn" onclick="switchUser()">switch</button>
+    </div>
+  </nav>
+
+  <div class="drama-hero" aria-hidden="true">
+    <div class="film-grain"></div>
+    <div class="drama-marquee">
+      <span>NOW SHOWING &nbsp;·&nbsp; N & M PRIVATE SCREENING &nbsp;·&nbsp; FEATURE PRESENTATION &nbsp;·&nbsp; NOW SHOWING &nbsp;·&nbsp; N & M PRIVATE SCREENING &nbsp;·&nbsp; FEATURE PRESENTATION &nbsp;·&nbsp;</span>
+    </div>
+  </div>
+
+  <div class="page-content drama-content">
+
+    <!-- Add new entry -->
+    <button class="add-drama-btn" id="add-drama-btn">+ add to collection</button>
+
+    <!-- Gallery -->
+    <div class="drama-grid" id="drama-grid">
+      <p class="empty-state drama-empty" id="drama-empty">the house lights are up. add something to watch.</p>
+    </div>
+
+  </div>
+
+  <!-- Add/Edit Modal -->
+  <div id="drama-modal" class="drama-modal-overlay" style="display:none" role="dialog" aria-modal="true">
+    <div class="drama-modal-box">
+      <button class="modal-close drama-close" id="drama-modal-close">✕</button>
+      <h3 class="drama-modal-title">add to collection</h3>
+
+      <label class="drama-label">title</label>
+      <input type="text" id="drama-title-input" class="drama-text-input" placeholder="e.g. Crash Landing on You" maxlength="100" />
+
+      <label class="drama-label">poster image</label>
+      <div class="image-input-group">
+        <input type="url" id="drama-url-input" class="drama-text-input" placeholder="paste image URL..." />
+        <span class="image-or">or</span>
+        <label class="file-upload-label">
+          upload file
+          <input type="file" id="drama-file-input" accept="image/*" style="display:none" />
+        </label>
+      </div>
+      <img id="drama-preview" class="drama-preview-img" src="" alt="" style="display:none" />
+
+      <button class="drama-submit-btn" id="drama-submit-btn">add to collection</button>
+    </div>
+  </div>
+
+  <!-- Entry detail modal -->
+  <div id="detail-modal" class="drama-modal-overlay" style="display:none" role="dialog" aria-modal="true">
+    <div class="drama-modal-box detail-box">
+      <button class="modal-close drama-close" id="detail-close">✕</button>
+      <div class="detail-inner" id="detail-inner"></div>
+    </div>
+  </div>
+
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-storage-compat.js"></script>
+  <script src="js/firebase-config.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/drama.js"></script>
+</body>
+</html>

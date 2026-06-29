@@ -1,0 +1,474 @@
+/* ============================================================
+   DRAMA.CSS  —  old theater / silent film palette
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400;1,700&family=IM+Fell+English:ital@0;1&display=swap');
+
+:root {
+  --d-black:  #0e0e0e;
+  --d-ink:    #1a1a1a;
+  --d-gray:   #5a5a5a;
+  --d-silver: #b0a898;
+  --d-cream:  #e8e0d0;
+  --d-white:  #f5f2ec;
+  --d-gold:   #c9a84c;
+}
+
+body {
+  background: var(--d-black);
+  color: var(--d-cream);
+}
+
+/* ── Hero marquee ── */
+.drama-hero {
+  position: relative;
+  background: var(--d-ink);
+  border-bottom: 1px solid #2a2a2a;
+  overflow: hidden;
+  padding: 10px 0;
+}
+
+.film-grain {
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.06'/%3E%3C/svg%3E");
+  opacity: 0.3;
+  pointer-events: none;
+}
+
+.drama-marquee {
+  display: flex;
+  width: max-content;
+  animation: marquee 22s linear infinite;
+}
+
+.drama-marquee span {
+  font-family: 'IM Fell English', serif;
+  font-size: 0.8rem;
+  letter-spacing: 0.2em;
+  color: var(--d-silver);
+  white-space: nowrap;
+}
+
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+/* ── Page content ── */
+.drama-content {
+  max-width: 1000px;
+}
+
+/* ── Add button ── */
+.add-drama-btn {
+  font-family: 'IM Fell English', serif;
+  font-size: 0.85rem;
+  letter-spacing: 0.14em;
+  color: var(--d-cream);
+  border: 1px solid var(--d-silver);
+  padding: 10px 22px;
+  border-radius: 2px;
+  background: transparent;
+  transition: background 0.2s, color 0.2s;
+  margin-bottom: 36px;
+  display: block;
+}
+.add-drama-btn:hover {
+  background: var(--d-cream);
+  color: var(--d-black);
+}
+
+/* ── Grid ── */
+.drama-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 24px;
+}
+
+.drama-empty {
+  font-family: 'IM Fell English', serif;
+  font-style: italic;
+  color: var(--d-gray);
+  font-size: 1rem;
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 60px 0;
+  letter-spacing: 0.04em;
+}
+
+/* ── Drama card ── */
+.drama-card {
+  cursor: pointer;
+  position: relative;
+  animation: card-in 0.3s ease;
+  border: 1px solid #2a2a2a;
+  border-radius: 2px;
+  overflow: hidden;
+  background: var(--d-ink);
+  transition: transform 0.2s, border-color 0.2s;
+}
+.drama-card:hover { transform: translateY(-4px); border-color: var(--d-silver); }
+
+@keyframes card-in {
+  from { opacity: 0; transform: scale(0.96); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+.drama-card-poster {
+  width: 100%;
+  aspect-ratio: 2/3;
+  object-fit: cover;
+  display: block;
+  filter: grayscale(30%);
+  transition: filter 0.3s;
+}
+.drama-card:hover .drama-card-poster { filter: grayscale(0%); }
+
+.drama-card-poster-placeholder {
+  width: 100%;
+  aspect-ratio: 2/3;
+  background: #1e1e1e;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--d-gray);
+  font-family: 'IM Fell English', serif;
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+}
+
+.drama-card-info {
+  padding: 12px;
+}
+
+.drama-card-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 0.88rem;
+  color: var(--d-cream);
+  line-height: 1.35;
+  margin-bottom: 6px;
+}
+
+.drama-card-stars {
+  display: flex;
+  gap: 2px;
+}
+
+.star-avg {
+  font-size: 0.7rem;
+  color: var(--d-gold);
+}
+
+/* ── Modal overlay ── */
+.drama-modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 500;
+  background: rgba(0,0,0,0.82);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.drama-modal-box {
+  background: var(--d-ink);
+  border: 1px solid #333;
+  border-radius: 2px;
+  padding: 32px;
+  width: 100%;
+  max-width: 480px;
+  position: relative;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.drama-close {
+  position: absolute;
+  top: 16px; right: 16px;
+  color: var(--d-gray);
+  font-size: 1rem;
+  transition: color 0.2s;
+}
+.drama-close:hover { color: var(--d-cream); }
+
+.drama-modal-title {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: 1.4rem;
+  color: var(--d-cream);
+  margin-bottom: 24px;
+  letter-spacing: 0.04em;
+}
+
+.drama-label {
+  display: block;
+  font-family: 'IM Fell English', serif;
+  font-size: 0.75rem;
+  letter-spacing: 0.12em;
+  color: var(--d-silver);
+  margin-bottom: 8px;
+  text-transform: lowercase;
+}
+
+.drama-text-input {
+  width: 100%;
+  background: #151515;
+  border: 1px solid #333;
+  border-radius: 2px;
+  color: var(--d-cream);
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  padding: 10px 14px;
+  outline: none;
+  margin-bottom: 20px;
+  transition: border-color 0.2s;
+}
+.drama-text-input:focus { border-color: var(--d-silver); }
+.drama-text-input::placeholder { color: #444; }
+
+.image-input-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+}
+
+.image-input-group .drama-text-input {
+  flex: 1;
+  min-width: 180px;
+  margin-bottom: 0;
+}
+
+.image-or {
+  font-family: 'IM Fell English', serif;
+  font-size: 0.75rem;
+  color: var(--d-gray);
+  font-style: italic;
+}
+
+.file-upload-label {
+  font-family: 'IM Fell English', serif;
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
+  color: var(--d-cream);
+  border: 1px solid var(--d-silver);
+  padding: 8px 14px;
+  border-radius: 2px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.2s;
+}
+.file-upload-label:hover { background: #222; }
+
+.drama-preview-img {
+  width: 100%;
+  max-height: 200px;
+  object-fit: contain;
+  border: 1px solid #333;
+  border-radius: 2px;
+  margin-bottom: 20px;
+}
+
+.drama-submit-btn {
+  font-family: 'IM Fell English', serif;
+  font-size: 0.88rem;
+  letter-spacing: 0.1em;
+  color: var(--d-black);
+  background: var(--d-cream);
+  padding: 12px 24px;
+  border-radius: 2px;
+  width: 100%;
+  transition: background 0.2s;
+}
+.drama-submit-btn:hover { background: var(--d-gold); }
+
+/* ── Detail modal ── */
+.detail-box {
+  max-width: 620px;
+}
+
+.detail-inner {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.detail-poster-row {
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+}
+
+.detail-poster {
+  width: 140px;
+  flex-shrink: 0;
+  border-radius: 2px;
+  object-fit: cover;
+  border: 1px solid #333;
+  filter: grayscale(20%);
+}
+
+.detail-poster-placeholder {
+  width: 140px;
+  height: 200px;
+  background: #1e1e1e;
+  border: 1px solid #333;
+  border-radius: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--d-gray);
+  font-family: 'IM Fell English', serif;
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+}
+
+.detail-meta { flex: 1; }
+
+.detail-title {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: 1.5rem;
+  color: var(--d-cream);
+  line-height: 1.25;
+  margin-bottom: 16px;
+}
+
+.detail-delete-btn {
+  font-family: 'IM Fell English', serif;
+  font-size: 0.72rem;
+  color: #555;
+  letter-spacing: 0.08em;
+  margin-top: 12px;
+  transition: color 0.2s;
+}
+.detail-delete-btn:hover { color: #c07070; }
+
+/* ── Stars ── */
+.stars-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.stars-label {
+  font-family: 'IM Fell English', serif;
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  color: var(--d-silver);
+  text-transform: lowercase;
+}
+
+.star-input {
+  display: flex;
+  gap: 3px;
+}
+
+.star-btn {
+  font-size: 1.2rem;
+  color: #333;
+  transition: color 0.15s, transform 0.1s;
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 0;
+  line-height: 1;
+}
+.star-btn.filled { color: var(--d-gold); }
+.star-btn:hover { transform: scale(1.15); }
+
+.my-rating-display {
+  font-family: 'IM Fell English', serif;
+  font-size: 0.72rem;
+  color: var(--d-gold);
+  font-style: italic;
+}
+
+/* ── Comments ── */
+.comments-section { border-top: 1px solid #222; padding-top: 16px; }
+
+.comments-heading {
+  font-family: 'IM Fell English', serif;
+  font-size: 0.75rem;
+  letter-spacing: 0.12em;
+  color: var(--d-silver);
+  margin-bottom: 14px;
+  text-transform: lowercase;
+}
+
+.comment-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 16px; }
+
+.comment-item {
+  background: #151515;
+  border: 1px solid #222;
+  border-radius: 2px;
+  padding: 10px 14px;
+}
+
+.comment-author {
+  font-family: 'IM Fell English', serif;
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  color: var(--d-silver);
+  margin-bottom: 6px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.comment-text {
+  font-size: 0.88rem;
+  color: var(--d-cream);
+  line-height: 1.55;
+}
+
+.comment-delete {
+  font-size: 0.65rem;
+  color: #333;
+  margin-left: auto;
+  transition: color 0.2s;
+}
+.comment-delete:hover { color: #c07070; }
+
+.comment-compose {
+  display: flex;
+  gap: 8px;
+}
+
+.comment-input {
+  flex: 1;
+  background: #0e0e0e;
+  border: 1px solid #333;
+  border-radius: 2px;
+  color: var(--d-cream);
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  padding: 8px 12px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+.comment-input:focus { border-color: var(--d-silver); }
+.comment-input::placeholder { color: #333; }
+
+.comment-send {
+  font-family: 'IM Fell English', serif;
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
+  color: var(--d-black);
+  background: var(--d-cream);
+  padding: 8px 14px;
+  border-radius: 2px;
+  white-space: nowrap;
+  transition: background 0.2s;
+}
+.comment-send:hover { background: var(--d-gold); }
+
+/* ── Responsive ── */
+@media (max-width: 600px) {
+  .drama-grid { grid-template-columns: repeat(2, 1fr); gap: 14px; }
+  .detail-poster-row { flex-direction: column; }
+  .detail-poster, .detail-poster-placeholder { width: 100%; height: auto; aspect-ratio: 2/3; }
+}

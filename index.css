@@ -1,0 +1,136 @@
+/* ============================================================
+   INDEX.CSS  —  landing page
+   ============================================================ */
+
+.landing {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 64px;
+  position: relative;
+  overflow: hidden;
+  background: #faf9f6;
+}
+
+/* ── Ink splashes ── */
+.splash {
+  position: absolute;
+  pointer-events: none;
+}
+.splash-tl { top: -40px; left: -40px; width: 280px; }
+.splash-br { bottom: -40px; right: -40px; width: 300px; }
+
+/* ── Title ── */
+.title-block {
+  display: flex;
+  align-items: flex-end;
+  gap: 4px;
+}
+
+.site-title {
+  font-family: var(--font-typewriter);
+  font-size: clamp(4rem, 12vw, 8rem);
+  color: var(--navy);
+  letter-spacing: 0.12em;
+  line-height: 1;
+  font-weight: 400;
+}
+
+.title-cursor {
+  font-family: var(--font-typewriter);
+  font-size: clamp(4rem, 12vw, 8rem);
+  color: var(--teal);
+  line-height: 1;
+  animation: blink 1s step-end infinite;
+  margin-bottom: 0.04em;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+/* ── Nav buttons ── */
+.landing-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+  max-width: 440px;
+  padding: 0 24px;
+}
+
+.landing-btn {
+  display: grid;
+  grid-template-columns: 2rem 1fr;
+  grid-template-rows: auto auto;
+  column-gap: 16px;
+  align-items: center;
+  padding: 20px 24px;
+  border-radius: var(--radius);
+  text-decoration: none;
+  transition: transform 0.18s, box-shadow 0.18s;
+  box-shadow: var(--shadow);
+  position: relative;
+  overflow: hidden;
+}
+
+.landing-btn::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  background: rgba(255,255,255,0.08);
+  transition: opacity 0.18s;
+}
+.landing-btn:hover::after { opacity: 1; }
+.landing-btn:hover { transform: translateX(6px); box-shadow: 0 8px 32px rgba(1,32,78,0.16); }
+
+.btn-icon {
+  grid-row: 1 / 3;
+  font-size: 1.3rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.85;
+}
+
+.btn-label {
+  font-family: var(--font-typewriter);
+  font-size: 1rem;
+  letter-spacing: 0.08em;
+  line-height: 1.2;
+}
+
+.btn-sub {
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  opacity: 0.65;
+  letter-spacing: 0.02em;
+  margin-top: 2px;
+}
+
+/* Button themes */
+.btn-notes {
+  background: var(--navy);
+  color: var(--cream);
+}
+
+.btn-todo {
+  background: var(--teal);
+  color: #fff;
+}
+
+.btn-drama {
+  background: var(--orange);
+  color: #fff;
+}
+
+/* ── Responsive ── */
+@media (max-width: 480px) {
+  .landing { gap: 48px; }
+  .landing-nav { gap: 12px; }
+  .landing-btn { padding: 16px 18px; }
+}

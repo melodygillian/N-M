@@ -1,0 +1,211 @@
+/* ============================================================
+   MAIN.CSS  —  shared styles, nav bar, user picker, tokens
+   ============================================================ */
+
+/* ── Google Fonts ── */
+@import url('https://fonts.googleapis.com/css2?family=Special+Elite&family=DM+Sans:wght@300;400;500&family=Playfair+Display:ital,wght@0,700;1,400&display=swap');
+
+/* ── Design Tokens ── */
+:root {
+  --navy:   #01204E;
+  --teal:   #028391;
+  --cream:  #F6DCAC;
+  --peach:  #FAA968;
+  --orange: #F85525;
+
+  --font-typewriter: 'Special Elite', cursive;
+  --font-body: 'DM Sans', sans-serif;
+  --font-serif: 'Playfair Display', serif;
+
+  --nav-h: 56px;
+  --radius: 10px;
+  --shadow: 0 4px 24px rgba(1,32,78,0.10);
+}
+
+/* ── Reset ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font-body);
+  background: #faf9f6;
+  color: var(--navy);
+  min-height: 100vh;
+}
+
+img { max-width: 100%; display: block; }
+
+button { cursor: pointer; border: none; background: none; font-family: inherit; }
+
+/* ── Top Nav Bar ── */
+.top-nav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  height: var(--nav-h);
+  background: var(--navy);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24px;
+  box-shadow: 0 2px 12px rgba(1,32,78,0.18);
+}
+
+.nav-back {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--cream);
+  font-family: var(--font-typewriter);
+  font-size: 0.9rem;
+  letter-spacing: 0.05em;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.nav-back:hover { color: var(--peach); }
+.nav-back svg { width: 18px; height: 18px; }
+
+.nav-title {
+  font-family: var(--font-typewriter);
+  color: var(--cream);
+  font-size: 1.1rem;
+  letter-spacing: 0.1em;
+}
+
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+#user-badge {
+  font-family: var(--font-typewriter);
+  font-size: 0.8rem;
+  color: #fff;
+  padding: 4px 12px;
+  border-radius: 20px;
+  letter-spacing: 0.06em;
+}
+
+.switch-btn {
+  font-family: var(--font-typewriter);
+  font-size: 0.75rem;
+  color: var(--cream);
+  opacity: 0.6;
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: opacity 0.2s;
+  letter-spacing: 0.05em;
+}
+.switch-btn:hover { opacity: 1; }
+
+/* ── User Picker Overlay ── */
+#user-picker-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: var(--navy);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.4s;
+}
+
+#user-picker-overlay.fade-out { opacity: 0; }
+
+.picker-box {
+  text-align: center;
+}
+
+.picker-label {
+  font-family: var(--font-typewriter);
+  color: var(--cream);
+  font-size: 1.8rem;
+  letter-spacing: 0.15em;
+  margin-bottom: 48px;
+}
+
+.picker-buttons {
+  display: flex;
+  gap: 48px;
+  justify-content: center;
+}
+
+.picker-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  color: var(--cream);
+  font-family: var(--font-typewriter);
+  font-size: 1.1rem;
+  letter-spacing: 0.1em;
+  transition: transform 0.2s;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+.picker-btn:hover { transform: translateY(-6px); }
+
+.picker-avatar {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 3px solid var(--teal);
+}
+
+.picker-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.avatar-fallback {
+  width: 100%;
+  height: 100%;
+  background: var(--teal);
+  color: #fff;
+  font-size: 2.5rem;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-typewriter);
+}
+
+/* ── Shared Utilities ── */
+.page-content {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 40px 24px 80px;
+}
+
+.section-heading {
+  font-family: var(--font-typewriter);
+  font-size: 1.5rem;
+  letter-spacing: 0.1em;
+  margin-bottom: 8px;
+}
+
+.timestamp {
+  font-size: 0.72rem;
+  opacity: 0.45;
+  letter-spacing: 0.04em;
+}
+
+.tag-pill {
+  display: inline-block;
+  font-family: var(--font-typewriter);
+  font-size: 0.72rem;
+  padding: 2px 10px;
+  border-radius: 20px;
+  letter-spacing: 0.06em;
+}
+
+/* ── Responsive ── */
+@media (max-width: 600px) {
+  .picker-buttons { gap: 24px; }
+  .picker-avatar { width: 90px; height: 90px; }
+  .page-content { padding: 24px 16px 60px; }
+}
