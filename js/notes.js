@@ -41,7 +41,7 @@ function initNotes() {
     feed.innerHTML = "";
 
     if (!snapshot.exists()) {
-      feed.appendChild(empty);
+      feed.innerHTML = '<p class="empty-state">no notes yet. be the first. ✉</p>';
       return;
     }
 
