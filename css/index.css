@@ -15,12 +15,9 @@
 }
 
 /* ── Ink splashes ── */
-.splash {
-  position: absolute;
-  pointer-events: none;
-}
-.splash-tl { top: -40px; left: -40px; width: 280px; }
-.splash-br { bottom: -40px; right: -40px; width: 300px; }
+.splash { position: absolute; pointer-events: none; overflow: hidden; }
+.splash-tl { top: 0; left: 0; width: 220px; height: 220px; }
+.splash-br { bottom: 0; right: 0; width: 240px; height: 240px; }
 
 /* ── Title ── */
 .title-block {
