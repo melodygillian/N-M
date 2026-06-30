@@ -1,10 +1,11 @@
 // ============================================================
-//  DRAMA.JS  —  Drama Collection (Firebase + Storage)
+//  DRAMA.JS  —  Drama Collection (Firebase Realtime Database)
 // ============================================================
 
 let currentUser = null;
-let pendingImageDataURL = null;  // base64 from file upload
-let pendingImageURL = null;      // from URL paste
+let pendingImageDataURL = null;
+let pendingImageURL = null;
+const commentListeners = {};
 
 document.addEventListener("DOMContentLoaded", () => {
   requireUser(user => {
@@ -13,7 +14,6 @@ document.addEventListener("DOMContentLoaded", () => {
     initDrama();
   });
 
-  // Add modal
   document.getElementById("add-drama-btn").addEventListener("click", () => {
     resetModal();
     document.getElementById("drama-modal").style.display = "flex";
@@ -26,7 +26,6 @@ document.addEventListener("DOMContentLoaded", () => {
       document.getElementById("drama-modal").style.display = "none";
   });
 
-  // Image URL input preview
   document.getElementById("drama-url-input").addEventListener("input", e => {
     const url = e.target.value.trim();
     const preview = document.getElementById("drama-preview");
@@ -41,7 +40,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // File upload preview
   document.getElementById("drama-file-input").addEventListener("change", e => {
     const file = e.target.files[0];
     if (!file) return;
@@ -59,7 +57,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   document.getElementById("drama-submit-btn").addEventListener("click", submitDrama);
 
-  // Detail modal close
   document.getElementById("detail-close").addEventListener("click", () => {
     document.getElementById("detail-modal").style.display = "none";
   });
@@ -72,11 +69,10 @@ document.addEventListener("DOMContentLoaded", () => {
 function initDrama() {
   db.ref("dramas").on("value", snapshot => {
     const grid = document.getElementById("drama-grid");
-    const empty = document.getElementById("drama-empty");
     grid.innerHTML = "";
 
-    if (!snapshot.exists()) {
-      grid.appendChild(empty);
+    if (!snapshot.exists() || snapshot.numChildren() === 0) {
+      grid.innerHTML = '<p class="empty-state drama-empty">the house lights are up. add something to watch.</p>';
       return;
     }
 
@@ -97,7 +93,6 @@ function buildCard(drama) {
     ? `<img class="drama-card-poster" src="${drama.imageUrl || drama.imageData}" alt="${escapeHtml(drama.title)}" loading="lazy" />`
     : `<div class="drama-card-poster-placeholder">no poster</div>`;
 
-  // Compute average rating
   let ratingDisplay = "";
   if (drama.ratings) {
     const vals = Object.values(drama.ratings);
@@ -120,20 +115,20 @@ function buildCard(drama) {
 function openDetail(key) {
   const modal = document.getElementById("detail-modal");
   const inner = document.getElementById("detail-inner");
-  inner.innerHTML = "<p style='color:#555;font-style:italic;text-align:center;padding:40px 0'>loading...</p>";
   modal.style.display = "flex";
 
-  db.ref(`dramas/${key}`).once("value", snapshot => {
-    if (!snapshot.exists()) return;
-    const drama = { key, ...snapshot.val() };
-    renderDetail(drama, inner);
+  Object.keys(commentListeners).forEach(k => {
+    db.ref(`dramas/${k}/comments`).off("value", commentListeners[k]);
+    delete commentListeners[k];
   });
 
-  // Live updates for ratings/comments
   db.ref(`dramas/${key}`).on("value", snapshot => {
-    if (!snapshot.exists()) return;
+    if (!snapshot.exists()) {
+      modal.style.display = "none";
+      return;
+    }
     const drama = { key, ...snapshot.val() };
-    if (modal.style.display !== "none") renderDetail(drama, inner);
+    renderDetail(drama, inner);
   });
 }
 
@@ -142,7 +137,6 @@ function renderDetail(drama, container) {
   const myRating = drama.ratings?.[currentUser] || 0;
   const isOwner = drama.addedBy === currentUser;
 
-  // Average
   let avgHtml = "";
   if (drama.ratings) {
     const vals = Object.values(drama.ratings);
@@ -182,7 +176,6 @@ function renderDetail(drama, container) {
     </div>
   `;
 
-  // Star click
   container.querySelectorAll(".star-btn").forEach(btn => {
     btn.addEventListener("click", () => {
       const val = parseInt(btn.dataset.val);
@@ -190,7 +183,6 @@ function renderDetail(drama, container) {
     });
   });
 
-  // Delete
   if (isOwner) {
     container.querySelector("#drama-del-btn").addEventListener("click", () => {
       if (confirm("Remove this from the collection?")) {
@@ -200,10 +192,8 @@ function renderDetail(drama, container) {
     });
   }
 
-  // Load comments
   loadComments(drama.key, container.querySelector(`#comment-list-${drama.key}`));
 
-  // Post comment
   container.querySelector(`#comment-send-${drama.key}`).addEventListener("click", () => {
     const input = container.querySelector(`#comment-input-${drama.key}`);
     const text = input.value.trim();
@@ -218,7 +208,8 @@ function renderDetail(drama, container) {
 }
 
 function loadComments(dramaKey, container) {
-  db.ref(`dramas/${dramaKey}/comments`).on("value", snapshot => {
+  const listener = snapshot => {
+    if (!container.isConnected) return;
     container.innerHTML = "";
     if (!snapshot.exists()) return;
     snapshot.forEach(child => {
@@ -226,9 +217,10 @@ function loadComments(dramaKey, container) {
       const div = document.createElement("div");
       div.className = "comment-item";
       const canDel = c.author === currentUser;
+      const dotColor = c.author === "Hannah" ? "#028391" : "#F85525";
       div.innerHTML = `
         <div class="comment-author">
-          <div class="note-user-dot ${c.author}" style="width:6px;height:6px;border-radius:50%;background:${c.author==='Hannah'?'#028391':'#F85525'};flex-shrink:0"></div>
+          <div style="width:6px;height:6px;border-radius:50%;background:${dotColor};flex-shrink:0"></div>
           ${c.author}
           <span class="timestamp">${formatTime(c.createdAt)}</span>
           ${canDel ? `<button class="comment-delete" data-key="${child.key}" data-drama="${dramaKey}">✕</button>` : ""}
@@ -242,7 +234,10 @@ function loadComments(dramaKey, container) {
       }
       container.appendChild(div);
     });
-  });
+  };
+
+  commentListeners[dramaKey] = listener;
+  db.ref(`dramas/${dramaKey}/comments`).on("value", listener);
 }
 
 async function submitDrama() {
@@ -257,7 +252,6 @@ async function submitDrama() {
   let imageData = null;
 
   if (pendingImageDataURL) {
-    // Store as base64 inline (simple, no Storage needed for small images)
     imageData = pendingImageDataURL;
   } else if (pendingImageURL) {
     imageUrl = pendingImageURL;
