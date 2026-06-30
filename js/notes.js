@@ -34,7 +34,7 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 function initNotes() {
-  const notesRef = db.ref("notes").orderByChild("createdAt");
+  const notesRef = db.ref("notes");
   notesRef.on("value", snapshot => {
     const feed = document.getElementById("notes-feed");
     const empty = document.getElementById("empty-state");
