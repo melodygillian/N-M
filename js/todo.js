@@ -26,7 +26,10 @@ function initTodo() {
     activeList.innerHTML = "";
     doneList.innerHTML   = "";
 
-    if (!snapshot.exists()) return;
+    if (!snapshot.exists() || snapshot.numChildren() === 0) {
+      doneSection.style.display = "none";
+      return;
+    }
 
     const items = [];
     snapshot.forEach(child => items.push({ key: child.key, ...child.val() }));
@@ -34,7 +37,6 @@ function initTodo() {
     const active = items.filter(i => !i.done);
     const done   = items.filter(i => i.done);
 
-    // Newest first within each group
     active.reverse().forEach(item => activeList.appendChild(buildItem(item)));
     done.reverse().forEach(item => doneList.appendChild(buildItem(item)));
 
@@ -100,7 +102,6 @@ function toggleItem(key, currentDone) {
   db.ref(`todos/${key}`).update({ done: !currentDone });
 }
 
-// ── Helpers ──
 function formatDate(ts) {
   return new Date(ts).toLocaleDateString("en-US", { month: "short", day: "numeric" });
 }
