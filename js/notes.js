@@ -4,6 +4,7 @@
 
 let currentUser = null;
 let replyTargetKey = null;
+const replyListeners = {}; // track active reply listeners by note key
 
 document.addEventListener("DOMContentLoaded", () => {
   requireUser(user => {
@@ -12,20 +13,17 @@ document.addEventListener("DOMContentLoaded", () => {
     initNotes();
   });
 
-  // Char counter
   const input = document.getElementById("note-input");
   const counter = document.getElementById("char-count");
   input.addEventListener("input", () => {
     counter.textContent = `${input.value.length} / 600`;
   });
 
-  // Send note
   document.getElementById("send-btn").addEventListener("click", sendNote);
   document.getElementById("note-input").addEventListener("keydown", e => {
     if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) sendNote();
   });
 
-  // Modal close
   document.getElementById("modal-close").addEventListener("click", closeReplyModal);
   document.getElementById("modal-send").addEventListener("click", sendReply);
   document.getElementById("reply-modal").addEventListener("click", e => {
@@ -34,23 +32,30 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 function initNotes() {
-  const notesRef = db.ref("notes");
-  notesRef.on("value", snapshot => {
+  db.ref("notes").on("value", snapshot => {
     const feed = document.getElementById("notes-feed");
-    const empty = document.getElementById("empty-state");
     feed.innerHTML = "";
 
-    if (!snapshot.exists()) {
+    // detach all old reply listeners before rebuilding
+    Object.keys(replyListeners).forEach(key => {
+      db.ref(`notes/${key}/replies`).off("value", replyListeners[key]);
+      delete replyListeners[key];
+    });
+
+    if (!snapshot.exists() || snapshot.numChildren() === 0) {
       feed.innerHTML = '<p class="empty-state">no notes yet. be the first. ✉</p>';
       return;
     }
 
     const notes = [];
-    snapshot.forEach(child => notes.push({ key: child.key, ...child.val() }));
+    snapshot.forEach(child => {
+      notes.push({ key: child.key, ...child.val() });
+    });
     notes.reverse(); // newest first
 
     notes.forEach(note => {
-      feed.appendChild(buildNoteCard(note));
+      const card = buildNoteCard(note);
+      feed.appendChild(card);
     });
   });
 }
@@ -77,12 +82,10 @@ function buildNoteCard(note) {
     <div class="replies-list" id="replies-${note.key}"></div>
   `;
 
-  // Reply button
   card.querySelector(".reply-btn").addEventListener("click", () => {
     openReplyModal(note.key, note.author, note.text);
   });
 
-  // Delete button
   if (canDelete) {
     card.querySelector(".delete-note-btn").addEventListener("click", () => {
       if (confirm("Delete this note?")) {
@@ -91,14 +94,14 @@ function buildNoteCard(note) {
     });
   }
 
-  // Load replies
   loadReplies(note.key, card.querySelector(`#replies-${note.key}`));
 
   return card;
 }
 
 function loadReplies(noteKey, container) {
-  db.ref(`notes/${noteKey}/replies`).orderByChild("createdAt").on("value", snapshot => {
+  const listener = snapshot => {
+    if (!container.isConnected) return; // card no longer in DOM, skip
     container.innerHTML = "";
     if (!snapshot.exists()) return;
 
@@ -125,7 +128,10 @@ function loadReplies(noteKey, container) {
       }
       container.appendChild(item);
     });
-  });
+  };
+
+  replyListeners[noteKey] = listener;
+  db.ref(`notes/${noteKey}/replies`).on("value", listener);
 }
 
 function sendNote() {
@@ -171,7 +177,6 @@ function sendReply() {
   closeReplyModal();
 }
 
-// ── Helpers ──
 function formatTime(ts) {
   const d = new Date(ts);
   return d.toLocaleDateString("en-US", { month: "short", day: "numeric" }) +
