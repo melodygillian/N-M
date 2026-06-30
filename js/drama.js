@@ -70,7 +70,7 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 function initDrama() {
-  db.ref("dramas").orderByChild("createdAt").on("value", snapshot => {
+  db.ref("dramas").on("value", snapshot => {
     const grid = document.getElementById("drama-grid");
     const empty = document.getElementById("drama-empty");
     grid.innerHTML = "";
@@ -218,7 +218,7 @@ function renderDetail(drama, container) {
 }
 
 function loadComments(dramaKey, container) {
-  db.ref(`dramas/${dramaKey}/comments`).orderByChild("createdAt").on("value", snapshot => {
+  db.ref(`dramas/${dramaKey}/comments`).on("value", snapshot => {
     container.innerHTML = "";
     if (!snapshot.exists()) return;
     snapshot.forEach(child => {
