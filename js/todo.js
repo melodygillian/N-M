@@ -18,7 +18,7 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 function initTodo() {
-  db.ref("todos").orderByChild("createdAt").on("value", snapshot => {
+  db.ref("todos").on("value", snapshot => {
     const activeList = document.getElementById("todo-active");
     const doneList   = document.getElementById("todo-done");
     const doneSection = document.getElementById("completed-section");
